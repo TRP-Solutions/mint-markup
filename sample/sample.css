@@ -22,7 +22,7 @@ body > dialog {
 	max-width: 1140px;
 }
 
-header {
+body > header {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
@@ -35,17 +35,17 @@ header {
 	box-sizing: content-box;
 }
 
-header h1 {
+body > header h1 {
 	margin: 0rem;
 	flex-grow: 1;
 	white-space: nowrap;
 }
 
-header nav {
+body > header nav {
 	height: 2rem;
 }
 
-header nav details {
+body > header nav details {
 	display: flex;
 	flex-direction: column;
 	border: 1px solid var(--mint-grey-dark);
@@ -56,18 +56,18 @@ header nav details {
 	overflow: hidden;
 }
 
-header nav details summary {
+body > header nav details summary {
 	height: 2rem;
 	width: 15rem;
 	padding: 0rem .5rem;
 	line-height: 2rem;
 }
 
-header nav details[open] summary {
+body > header nav details[open] summary {
 	border-bottom: 1px solid var(--mint-grey-dark);
 }
 
-header nav a {
+body > header nav a {
 	display: flex;
 	align-items: center;
 	height: 2rem;
@@ -77,6 +77,6 @@ header nav a {
 	color: black;
 }
 
-header nav a:hover {
+body > header nav a:hover {
 	background: var(--mint-green-light);
 }

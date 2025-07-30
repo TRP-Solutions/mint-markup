@@ -8,7 +8,7 @@ namespace TRP\MintMarkup;
 
 use \TRP\HealDocument\{Wrapper, Component};
 
-class TableRow extends Wrapper implements ArrayAccess {
+class TableRow extends Wrapper implements \ArrayAccess {
 	protected array $cells = [];
 
 	public function __construct(Component $parent){
@@ -16,22 +16,22 @@ class TableRow extends Wrapper implements ArrayAccess {
 	}
 
 	public function th(array $at = [], ?string $text = null){
-		$cells[] = $th = MintMarkup::element($this->primary_element, 'th', $at, text:$text);
+		$this->cells[] = $th = MintMarkup::element($this->primary_element, 'th', $at, text:$text);
 		return $th;
 	}
 
 	public function td(array $at = [], ?string $text = null){
-		$cells[] = $td = MintMarkup::element($this->primary_element, 'th', $at, text:$text);
+		$this->cells[] = $td = MintMarkup::element($this->primary_element, 'td', $at, text:$text);
 		return $td;
 	}
 
 	public function header(...$headers){
-		array_map($header => $this->th(text:$header), $headers);
+		array_map(fn($header) => $this->th(text:$header), $headers);
 		return $this;
 	}
 
 	public function data(...$data){
-		array_map($value => $this->td(text:$value), $data);
+		array_map(fn($value) => $this->td(text:$value), $data);
 		return $this;
 	}
 

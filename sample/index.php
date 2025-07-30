@@ -1,7 +1,7 @@
 <?php
 /*
-HealDocument is licensed under the Apache License 2.0 license
-https://github.com/TRP-Solutions/heal-document/blob/master/LICENSE.txt
+MintMarkup is licensed under the Apache License 2.0 license
+https://github.com/TRP-Solutions/mint-markup/blob/master/LICENSE.txt
 */
 declare(strict_types=1);
 require_once '../../heal-document/lib/HealDocument.php'; // https://github.com/TRP-Solutions/heal-document
@@ -9,7 +9,11 @@ require_once "../lib/MintMarkup.php";
 require_once "../lib/Document.php";
 require_once "../lib/ElementGroup.php";
 require_once "../lib/Menu.php";
+require_once "../lib/Checkbox.php";
+require_once "../lib/Radio.php";
 require_once "../lib/Select.php";
+require_once "../lib/Table.php";
+require_once "../lib/TableRow.php";
 require_once "functions.php";
 
 \TRP\HealDocument\HealDocument::register_plugin('\TRP\MintMarkup\MintMarkup');

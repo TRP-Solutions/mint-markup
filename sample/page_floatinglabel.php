@@ -1,18 +1,37 @@
 <?php
 /*
-HealDocument is licensed under the Apache License 2.0 license
-https://github.com/TRP-Solutions/heal-document/blob/master/LICENSE.txt
+MintMarkup is licensed under the Apache License 2.0 license
+https://github.com/TRP-Solutions/mint-markup/blob/master/LICENSE.txt
 */
 declare(strict_types=1);
 
 $form = $main->form();
-$form->floatinglabel('Input');
-$form->floatinglabel('Number', type:'number');
-$form->floatinglabel('Textarea', type:'textarea', rows:'3');
+build_input($form);
+build_input($form, disabled: true);
 
-$form->floatinglabel('Input', disabled: true);
-$form->floatinglabel('Number', type:'number', disabled: true);
-$form->floatinglabel('Textarea', type:'textarea', rows:'3', disabled: true);
+function build_input($form, $disabled = false){
+	$form->floatinglabel('Input', disabled: $disabled);
+	$form->floatinglabel('Number', type:'number', disabled: $disabled);
+	$form->floatinglabel('File', type:'file', disabled: $disabled);
+	$select = $form->floatinglabel('Select', type:'select', disabled: $disabled);
+	$select->option('option1', 'Option 1');
+	$select->option('option2', 'Option 2');
+	$select->option('option3', 'Option 3');
+
+	$radio = $form->floatinglabel('Radio', type:'radio', disabled: $disabled);
+	$radio->option('radio1', 'Radio 1');
+	$radio->option('radio1', 'Radio 2');
+	$radio->option('radio1', 'Radio 3');
+
+	$checkbox = $form->floatinglabel('Checkbox Group', type:'checkbox', name: 'checkbox1', text:'Checkbox A', disabled: $disabled);
+	$checkbox->checkbox(name: 'checkbox2', text: 'Checkbox B', disabled: $disabled);
+
+	$form->floatinglabel('Textarea', type:'textarea', rows:'3', disabled: $disabled);
+
+	$form->floatinglabel('Date', type:'date', disabled: $disabled);
+	
+	$form->floatinglabel('Password', type:'password', disabled: $disabled);
+}
 
 $doc->style(<<<CSS
 	mint-floating {
@@ -24,7 +43,9 @@ $doc->style(<<<CSS
 	}
 
 	mint-floating > input,
-	mint-floating > textarea {
+	mint-floating > textarea,
+	mint-floating > select,
+	mint-floating > mint-input {
 		display: block;
 		width: 100%;
 		padding: 1rem .5rem;
@@ -34,8 +55,14 @@ $doc->style(<<<CSS
 		border-radius: .5rem;
 	}
 
+	mint-floating > select {
+		background-color: unset;
+	}
+
 	mint-floating > input:disabled,
-	mint-floating > textarea:disabled {
+	mint-floating > textarea:disabled,
+	mint-floating > select:disabled,
+	mint-floating > mint-input[disabled] {
 		background-color: #e9ecef;
 	}
 
@@ -65,7 +92,9 @@ $doc->style(<<<CSS
 	mint-floating > input:focus,
 	mint-floating > input:not(:placeholder-shown),
 	mint-floating > textarea:focus,
-	mint-floating > textarea:not(:placeholder-shown) {
+	mint-floating > textarea:not(:placeholder-shown),
+	mint-floating > select,
+	mint-floating > mint-input {
 		padding-top: 1.625rem;
 		padding-bottom: .375rem;
 	}
@@ -73,7 +102,9 @@ $doc->style(<<<CSS
 	mint-floating > input:focus ~ label,
 	mint-floating > input:not(:placeholder-shown) ~ label,
 	mint-floating > textarea:focus ~ label,
-	mint-floating > textarea:not(:placeholder-shown) ~ label  {
+	mint-floating > textarea:not(:placeholder-shown) ~ label,
+	mint-floating > select ~ label,
+	mint-floating > mint-input ~ label {
 		transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 	}
 CSS);

@@ -22,28 +22,32 @@ class Table extends Wrapper {
 
 	public function thead(){
 		if(!isset($this->thead)){
-			$this->thead = $this->primary_element('thead');
+			$this->thead = $this->primary_element->el('thead');
 		}
 		return $this->thead;
 	}
 
 	public function tbody(){
 		if(!isset($this->tbody)){
-			$this->tbody = $this->primary_element('tbody');
+			$this->tbody = $this->primary_element->el('tbody');
 		}
 		return $this->tbody;
 	}
 
 	public function tbody_add(){
-		$this->tbody = $this->primary_element('tbody');
+		$this->tbody = $this->primary_element->el('tbody');
 		return $this->tbody;
 	}
 
 	public function tfoot(){
 		if(!isset($this->tfoot)){
-			$this->tfoot = $this->primary_element('tfoot');
+			$this->tfoot = $this->primary_element->el('tfoot');
 		}
 		return $this->tfoot;
+	}
+
+	public function colgroup(?int $span = null){
+		return new TableColGroup($this->primary_element, $span);
 	}
 
 	public function header(...$headers){

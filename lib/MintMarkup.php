@@ -49,31 +49,51 @@ class MintMarkup extends Plugin {
 	}
 
 	public static function h2(Component $parent, ?string $text = null){
-		return self::element($parent, 'h1', text: $text);
+		return self::element($parent, 'h2', text: $text);
 	}
 
 	public static function h3(Component $parent, ?string $text = null){
-		return self::element($parent, 'h1', text: $text);
+		return self::element($parent, 'h3', text: $text);
 	}
 
 	public static function h4(Component $parent, ?string $text = null){
-		return self::element($parent, 'h1', text: $text);
+		return self::element($parent, 'h4', text: $text);
 	}
 
 	public static function h5(Component $parent, ?string $text = null){
-		return self::element($parent, 'h1', text: $text);
+		return self::element($parent, 'h5', text: $text);
 	}
 
 	public static function h6(Component $parent, ?string $text = null){
-		return self::element($parent, 'h1', text: $text);
+		return self::element($parent, 'h6', text: $text);
 	}
 
 	public static function p(Component $parent, ?string $text = null){
 		return self::element($parent, 'p', text: $text);
 	}
 
-	public static function a(Component $parent, string $href, ?string $text = null){
-		return self::element($parent, 'a', ['href'=>$href],text: $text);
+	public static function a(Component $parent, string $href, ?string $text = null, ?string $target = null){
+		return self::element($parent, 'a', ['href'=>$href],['target'=>$target],text: $text);
+	}
+
+	public static function ul(Component $parent, ...$values){
+		$ul = self::element($parent, 'ul');
+		$items = array_map(fn($value)=>self::element($ul,'li',text:$value), $values);
+		return new ElementGroup($ul, ...$items);
+	}
+
+	public static function blockquote(Component $parent, ?string $cite = null){
+		return self::element($parent, 'blockquote', opt: ['cite'=>$cite]);
+	}
+
+	public static function cite(Component $parent, ?string $text = null, ?string $href = null, ?string $target = null){
+		if(isset($href)){
+			$cite = self::element($parent, 'cite');
+			$a = $cite->a(href: $href, text: $text, target: $target);
+			return new ElementGroup($cite, a: $a);
+		} else {
+			return self::element($parent, 'cite', text: $text);
+		}
 	}
 
 	/*
@@ -135,6 +155,7 @@ class MintMarkup extends Plugin {
 		bool $disabled = false,
 		bool $readonly = false,
 		bool $required = false,
+		?array $options = null,
 		string ...$attributes
 	) {
 		return new Select(
@@ -145,7 +166,79 @@ class MintMarkup extends Plugin {
 			disabled: $disabled,
 			readonly: $readonly,
 			required: $required,
+			options: $options,
 		);
+	}
+
+	public static function radio(
+		Component $parent,
+		?string $name = null,
+		bool $disabled = false,
+		bool $readonly = false,
+		bool $required = false,
+		string ...$attributes
+	) {
+		return new Radio(
+			$parent,
+			...$attributes,
+			name: $name,
+			disabled: $disabled,
+			readonly: $readonly,
+			required: $required,
+		);
+	}
+
+	public static function checkbox(
+		Component $parent,
+		?string $name = null,
+		?string $value = null,
+		?string $text = null,
+		?string $id = null,
+		bool $disabled = false,
+		bool $readonly = false,
+		bool $required = false,
+		bool $checked = false,
+		string ...$attributes
+	) {
+		// TODO: should this be simplified
+		return new Checkbox(
+			$parent,
+			...$attributes,
+			name: $name,
+			text: $text,
+			id: $id,
+			value: $value,
+			disabled: $disabled,
+			readonly: $readonly,
+			required: $required,
+			checked: $checked,
+		);
+	}
+
+	public static function labelled_input(
+		Component $parent,
+		string $label,
+		?string $id = null,
+		string $type = 'text',
+		...$arguments
+	) {
+		$wrapper = static::element($parent, 'mint-input');
+		if(!isset($id) && $type != 'radio' && $type != 'checkbox'){
+			$id = 'mint-floating-'.bin2hex(random_bytes(4));
+		}
+		$label_element = static::label($wrapper, $label, $id);
+		if($type == 'select'){
+			$input = static::select($wrapper, ...$arguments, id: $id);
+		} elseif($type == 'radio'){
+			$input = static::radio($wrapper, ...$arguments);
+		} elseif($type == 'checkbox'){
+			$input = static::checkbox($wrapper, ...$arguments, id: $id);
+		} elseif($type == 'textarea'){
+			$input = static::textarea($wrapper, ...$arguments, id: $id, placeholder: $label);
+		} else {
+			$input = static::input($wrapper, ...$arguments, id: $id, placeholder: $label, type: $type);
+		}
+		return new ElementGroup($input, label: $label_element, wrapper: $wrapper);
 	}
 
 	public static function label(Component $parent, ?string $text = null, ?string $for = null){
@@ -160,11 +253,15 @@ class MintMarkup extends Plugin {
 		...$arguments
 	){
 		$wrapper = $parent->el('mint-floating');
-		if(!isset($id)){
+		if(!isset($id) && $type != 'radio' && $type != 'checkbox'){
 			$id = 'mint-floating-'.bin2hex(random_bytes(4));
 		}
 		if($type == 'select'){
 			$input = static::select($wrapper, ...$arguments, id: $id);
+		} elseif($type == 'radio'){
+			$input = static::radio($wrapper, ...$arguments);
+		} elseif($type == 'checkbox'){
+			$input = static::checkbox($wrapper, ...$arguments, id: $id);
 		} elseif($type == 'textarea'){
 			$input = static::textarea($wrapper, ...$arguments, id: $id, placeholder: $label);
 		} else {
@@ -267,8 +364,8 @@ class MintMarkup extends Plugin {
 		return new ElementGroup($details_element, summary: $summary_element);
 	}
 
-	public static function button(Component $parent, ?string $onclick = null, string $type = 'button', bool $disabled = false){
-		return self::element($parent, 'button', ['type'=>$type], ['onclick'=>$onclick], ['disabled'=>$disabled]);
+	public static function button(Component $parent, ?string $text = null, ?string $onclick = null, string $type = 'button', bool $disabled = false){
+		return self::element($parent, 'button', ['type'=>$type], ['onclick'=>$onclick], ['disabled'=>$disabled], text: $text);
 	}
 
 	/*

@@ -35,4 +35,8 @@ class ElementGroup extends Wrapper {
 	public function __unset($name){
 		throw new \Exception('Not Allowed');
 	}
+
+	public function __call(string $name, array $arguments): ?Component {
+		return $this->primary_element->$name(...$arguments);
+	}
 }

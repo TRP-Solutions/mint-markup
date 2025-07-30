@@ -16,6 +16,7 @@ class Select extends Wrapper {
 		bool $disabled = false,
 		bool $readonly = false,
 		bool $required = false,
+		?array $options = null,
 		string ...$attributes
 	){
 		$this->primary_element = MintMarkup::element(
@@ -25,11 +26,20 @@ class Select extends Wrapper {
 			opt: ['name'=>$name,'value'=>$value],
 			bool: ['disabled'=>$disabled,'readonly'=>$readonly,'required'=>$required],
 		);
+		if(isset($options)){
+			foreach($options as $option){
+				if(is_array($option)){
+					$this->option(...$option);
+				} else {
+					$this->option($option);
+				}
+			}
+		}
 	}
 
 	public function option(?string $value = null, ?string $text = null, bool $disabled = false){
 		return MintMarkup::element(
-			$parent,
+			$this->primary_element,
 			'option',
 			opt: ['value'=>$value],
 			bool: ['disabled'=>$disabled],

@@ -1,7 +1,7 @@
 <?php
 /*
-HealDocument is licensed under the Apache License 2.0 license
-https://github.com/TRP-Solutions/heal-document/blob/master/LICENSE.txt
+MintMarkup is licensed under the Apache License 2.0 license
+https://github.com/TRP-Solutions/mint-markup/blob/master/LICENSE.txt
 */
 declare(strict_types=1);
 
@@ -28,7 +28,7 @@ $doc->style(<<<CSS
 	}
 CSS);
 
-$main->button('document.querySelector("#modal-dialog").showModal();')->te('Show Modal Dialog');
+$main->button('Show Modal Dialog','document.querySelector("#modal-dialog").showModal();');
 
 $dialog = $doc->dialog(id: "modal-dialog");
 $dialog->dialog_close_button("\u{2715}");
