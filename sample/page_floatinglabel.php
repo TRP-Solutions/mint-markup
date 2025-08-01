@@ -5,6 +5,8 @@ https://github.com/TRP-Solutions/mint-markup/blob/master/LICENSE.txt
 */
 declare(strict_types=1);
 
+$main->h1('Floating Label');
+
 $form = $main->form();
 build_input($form);
 build_input($form, disabled: true);

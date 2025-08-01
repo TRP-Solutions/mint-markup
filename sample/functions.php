@@ -15,18 +15,22 @@ function page($page, $valid_pages){
 	$header = $doc->header();
 	$header->el('h1')->te($full_title);
 	$nav = $header->nav();
-	$details = $nav->details('Documentation');
+	$details = $nav->details();
+	$current_title = null;
 	foreach($valid_pages as $page_key => $page_title){
 		$url = $page_key == 'index' ? '.' : '?'.$page_key;
 		$link = $details->a($url, $page_title);
 		if($page == $page_key){
+			$current_title = $page_title;
 			$link->at(['style'=>'background:var(--mint-green);']);
 		}
 	}
+	$details->summary->te($current_title ?? 'Documentation');
 
+	$aside = $doc->aside();
 	$main = $doc->main();
 
-	return [$doc, $main];
+	return [$doc, $main, $aside];
 }
 
 function error($context, int $error, ?string $error_message = null){

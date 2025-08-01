@@ -368,6 +368,18 @@ class MintMarkup extends Plugin {
 		return self::element($parent, 'button', ['type'=>$type], ['onclick'=>$onclick], ['disabled'=>$disabled], text: $text);
 	}
 
+	public static function pagination(
+		Component $parent,
+		int $pages,
+		int $page = 1,
+		?string $onclick = null,
+		string $prev_glyph = '«',
+		string $next_glyph = '»',
+		string $skip_glyph = '…',
+	){
+		return new Pagination($parent, $pages, $page, $onclick);
+	}
+
 	/*
 	 * Generic element
 	 */

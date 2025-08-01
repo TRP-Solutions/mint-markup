@@ -25,6 +25,6 @@ class ElementSrcset extends Wrapper {
 		}
 		$this->srcset[$key] = $src;
 		$this->primary_element->at(['srcset'=>implode(',',$this->srcset)]);
-		return $this
+		return $this;
 	}
 }

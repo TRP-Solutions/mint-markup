@@ -8,12 +8,14 @@ require_once '../../heal-document/lib/HealDocument.php'; // https://github.com/T
 require_once "../lib/MintMarkup.php";
 require_once "../lib/Document.php";
 require_once "../lib/ElementGroup.php";
+require_once "../lib/ElementSrcset.php";
 require_once "../lib/Menu.php";
 require_once "../lib/Checkbox.php";
 require_once "../lib/Radio.php";
 require_once "../lib/Select.php";
 require_once "../lib/Table.php";
 require_once "../lib/TableRow.php";
+require_once "../lib/Pagination.php";
 require_once "functions.php";
 
 \TRP\HealDocument\HealDocument::register_plugin('\TRP\MintMarkup\MintMarkup');
@@ -21,7 +23,6 @@ require_once "functions.php";
 $valid_pages = [
 	'index'=>'Index',
 	'article'=>'Article',
-	'breadcrumb'=>'Breadcrumb',
 	'form'=>'Form',
 	'floatinglabel'=>'Floating Labels',
 	'modal'=>'Modal',
@@ -35,16 +36,16 @@ try {
 		throw new \Exception("'$page' Not Found", 404);
 	}
 
-	[$doc, $main] = page($page, $valid_pages);
+	[$doc, $main, $aside] = page($page, $valid_pages);
 
 	$filename = 'page_'.$page.'.php';
 	if(!is_file($filename)){
 		throw new \Exception("'$page' Not Found", 404);
 	} else {
-		require_once $filename;
-		$doc->el('hr');
 		$source = highlight_file($filename, true);
-		$doc->aside()->details('Source')->fr($source);
+		$aside->details('Source')->fr($source);
+		$aside->el('hr');
+		require_once $filename;
 	}
 } catch (\Exception $e){
 	if(!isset($main)){
