@@ -28,6 +28,7 @@ $valid_pages = [
 	'modal'=>'Modal',
 	'pagination'=>'Pagination',
 	'table'=>'Table',
+	'icon'=>'Icon',
 ];
 
 try {

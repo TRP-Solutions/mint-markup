@@ -335,6 +335,10 @@ class MintMarkup extends Plugin {
 		}
 	}
 
+	public static function icon(Component $parent, string $icon){
+		return self::element($parent, 'mint-icon', ['data-icon'=>$icon]);
+	}
+
 	/*
 	 * Interactive elements
 	 */
@@ -364,8 +368,17 @@ class MintMarkup extends Plugin {
 		return new ElementGroup($details_element, summary: $summary_element);
 	}
 
-	public static function button(Component $parent, ?string $text = null, ?string $onclick = null, string $type = 'button', bool $disabled = false){
-		return self::element($parent, 'button', ['type'=>$type], ['onclick'=>$onclick], ['disabled'=>$disabled], text: $text);
+	public static function button(Component $parent, ?string $text = null, ?string $icon = null, ?string $onclick = null, string $type = 'button', bool $disabled = false){
+		$button = self::element($parent, 'button', ['type'=>$type], ['onclick'=>$onclick], ['disabled'=>$disabled]);
+		if(isset($icon)){
+			self::icon($button, $icon);
+			if(isset($text)){
+				$button->el('span')->te($text);
+			}
+		} elseif(isset($text)) {
+			$button->te($text);
+		}
+		return $button;
 	}
 
 	public static function pagination(
