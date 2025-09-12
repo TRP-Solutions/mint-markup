@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 $main->h1('Modal');
 
-$main->button('Show Modal Dialog','document.querySelector("#modal-dialog").showModal();');
+$main->button('Show Modal Dialog',onclick:'document.querySelector("#modal-dialog").showModal();');
 
 $dialog = $doc->dialog(id: "modal-dialog");
 $dialog->dialog_close_button("\u{2715}");
