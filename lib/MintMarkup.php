@@ -335,8 +335,8 @@ class MintMarkup extends Plugin {
 		}
 	}
 
-	public static function icon(Component $parent, string $icon){
-		return self::element($parent, 'mint-icon', ['data-icon'=>$icon]);
+	public static function icon(Component $parent, string $icon, ?string $spritesheet = null, float $aspect_ratio = 1){
+		return new Icon($parent, $icon, $spritesheet, $aspect_ratio);
 	}
 
 	/*
@@ -368,10 +368,14 @@ class MintMarkup extends Plugin {
 		return new ElementGroup($details_element, summary: $summary_element);
 	}
 
-	public static function button(Component $parent, ?string $text = null, ?string $icon = null, ?string $onclick = null, string $type = 'button', bool $disabled = false){
+	public static function button(Component $parent, ?string $text = null, array|string|null $icon = null, ?string $onclick = null, string $type = 'button', bool $disabled = false){
 		$button = self::element($parent, 'button', ['type'=>$type], ['onclick'=>$onclick], ['disabled'=>$disabled]);
 		if(isset($icon)){
-			self::icon($button, $icon);
+			if(is_array($icon)){
+				self::icon($button, ...$icon);
+			} else {
+				self::icon($button, $icon);
+			}
 			if(isset($text)){
 				$button->el('span')->te($text);
 			}

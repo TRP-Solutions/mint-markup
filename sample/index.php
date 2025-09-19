@@ -9,6 +9,7 @@ require_once "../lib/MintMarkup.php";
 require_once "../lib/Document.php";
 require_once "../lib/ElementGroup.php";
 require_once "../lib/ElementSrcset.php";
+require_once "../lib/Icon.php";
 require_once "../lib/Menu.php";
 require_once "../lib/Checkbox.php";
 require_once "../lib/Radio.php";
