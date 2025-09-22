@@ -22,7 +22,6 @@ class Checkbox extends Wrapper {
 		bool $checked = false,
 		string ...$attributes,
 	){
-		$this->attributes = $attributes;
 		$this->wrapper = MintMarkup::element($parent, 'mint-input', bool: ['disabled'=>$disabled]);
 		$this->primary_element = $this->checkbox(
 			...$attributes,
