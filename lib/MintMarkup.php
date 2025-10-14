@@ -215,6 +215,30 @@ class MintMarkup extends Plugin {
 		);
 	}
 
+	public static function fieldset(
+		Component $parent,
+		string|true|null $legend = null,
+		?string $name = null,
+		?string $id = null,
+		?string $form = null,
+		bool $disabled = false,
+		string ...$attributes
+	) {
+		$fieldset = self::element(
+			$parent,
+			'fieldset',
+			opt: ['name'=>$name,'id'=>$id,'form'=>$form],
+			bool: ['disabled'=>$disabled],
+		);
+		$elements = [];
+		if(is_string($legend)){
+			$elements['legend'] = self::element($fieldset, 'legend', text: $legend);
+		} elseif($legend === true){
+			$elements['legend'] = self::element($fieldset, 'legend');
+		}
+		return new ElementGroup($fieldset, ...$elements);
+	}
+
 	public static function labelled_input(
 		Component $parent,
 		string $label,

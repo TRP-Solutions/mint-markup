@@ -8,8 +8,12 @@ declare(strict_types=1);
 $main->h1('Floating Label');
 
 $form = $main->form();
-build_input($form);
-build_input($form, disabled: true);
+$section = $form->el('section');
+$section->h2('Enabled inputs');
+build_input($section);
+$section = $form->el('section');
+$section->h2('Disabled inputs');
+build_input($section, disabled: true);
 
 function build_input($form, $disabled = false){
 	$form->floatinglabel('Input', disabled: $disabled);
@@ -33,9 +37,32 @@ function build_input($form, $disabled = false){
 	$form->floatinglabel('Date', type:'date', disabled: $disabled);
 	
 	$form->floatinglabel('Password', type:'password', disabled: $disabled);
+
+	$fieldset_outer = $form->fieldset("Grouping inputs with fieldset");
+
+	$fieldset = $fieldset_outer->fieldset(disabled: $disabled);
+	$fieldset->floatinglabel('Grouped Input 1');
+	$fieldset->floatinglabel('Grouped Checkbox 1', type:'checkbox', name: 'checkbox3', text:'Checkbox C');
+
+	$fieldset = $fieldset_outer->fieldset("Fieldset description in legend", disabled: $disabled);
+	$fieldset->floatinglabel('Grouped Input 2');
+	$fieldset->floatinglabel('Grouped Input 3');
+	$select = $fieldset->floatinglabel('Grouped Select', type:'select');
+	$select->option('option1', 'Option 1');
+	$select->option('option2', 'Option 2');
+	$select->option('option3', 'Option 3');
 }
 
 $doc->style(<<<CSS
+	main > form {
+		display: flex;
+		gap: 1rem;
+	}
+
+	main > form > section {
+		flex: 1 0 auto;
+	}
+
 	mint-floating {
 		display: block;
 		min-height: 3.5rem;
@@ -64,7 +91,8 @@ $doc->style(<<<CSS
 	mint-floating > input:disabled,
 	mint-floating > textarea:disabled,
 	mint-floating > select:disabled,
-	mint-floating > mint-input[disabled] {
+	mint-floating > mint-input[disabled],
+	fieldset:disabled mint-floating > mint-input {
 		background-color: #e9ecef;
 	}
 
@@ -108,5 +136,40 @@ $doc->style(<<<CSS
 	mint-floating > select ~ label,
 	mint-floating > mint-input ~ label {
 		transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+	}
+
+	fieldset:has(> mint-floating) {
+		display: flex;
+		border-width: 0px;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	fieldset > mint-floating {
+		flex: 1 0 auto;
+	}
+
+	fieldset > mint-floating > input,
+	fieldset > mint-floating > select,
+	fieldset > mint-floating > mint-input {
+		height: 100%;
+	}
+
+	fieldset > mint-floating:has(:focus) {
+		z-index: 1;
+	}
+
+	fieldset > mint-floating:not(:first-of-type) > input,
+	fieldset > mint-floating:not(:first-of-type) > select,
+	fieldset > mint-floating:not(:first-of-type) > mint-input {
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+	}
+
+	fieldset > mint-floating:not(:last-of-type) > input,
+	fieldset > mint-floating:not(:last-of-type) > select,
+	fieldset > mint-floating:not(:last-of-type) > mint-input {
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
 	}
 CSS);
