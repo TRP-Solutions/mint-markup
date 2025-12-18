@@ -8,7 +8,7 @@ namespace TRP\MintMarkup;
 
 use \TRP\HealDocument\{Wrapper, Component};
 
-class Pagination extends Wrapper implements \ArrayAccess {
+class Pagination extends Wrapper implements \ArrayAccess, \IteratorAggregate {
 	public static string $previous_label = '«';
 	public static string $next_label = '»';
 	public static string $skip_label = '…';
@@ -110,5 +110,12 @@ class Pagination extends Wrapper implements \ArrayAccess {
 	
 	public function offsetUnset(mixed $offset): void {
 		throw new \Exception('Not Allowed');
+	}
+
+	/*
+	 * IteratorAggregate
+	 */
+	public function getIterator(): \Traversable {
+		return new \ArrayIterator($this->children);
 	}
 }

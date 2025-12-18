@@ -5,14 +5,9 @@ https://github.com/TRP-Solutions/mint-markup/blob/master/LICENSE.txt
 */
 declare(strict_types=1);
 
-$main->h1('Modal');
+$main->h1('Tabs');
 
-$main->button('Show Modal Dialog',onclick:'document.querySelector("#modal-dialog").showModal();');
-
-$dialog = $doc->dialog(id: "modal-dialog");
-$dialog->dialog_close_button("\u{2715}");
-
-$tabs = $dialog->tabs();
+$tabs = $main->tabs();
 $tab1 = $tabs->tab('Tab 1', selected: true);
 $tab1->at(['onclick'=>'select_tab(this);']);
 $tab1->panel->h2('Tab 1');
@@ -47,18 +42,6 @@ $doc->script()->te(<<<JS
 JS);
 
 $doc->style(<<<CSS
-	dialog menu {
-		display: flex;
-		list-style: none;
-		margin: 0px;
-		padding: 0px;
-		gap: .5rem;
-	}
-	dialog form[method=dialog] {
-		float: right;
-		margin-left: 1rem;
-		margin-bottom: .5rem;
-	}
 	mint-tabs {
 		display: block;
 		clear: both;

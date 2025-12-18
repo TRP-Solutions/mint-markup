@@ -143,8 +143,9 @@ class MintMarkup extends Plugin {
 			$parent,
 			'textarea',
 			at: $attributes,
-			opt: ['name'=>$name,'value'=>$value],
+			opt: ['name'=>$name],
 			bool: ['disabled'=>$disabled,'readonly'=>$readonly,'required'=>$required],
+			text: $value,
 		);
 	}
 
@@ -370,8 +371,8 @@ class MintMarkup extends Plugin {
 		return new Menu($parent);
 	}
 
-	public static function dialog(Component $parent, bool $open = false, ?string $id = null){
-		return self::element($parent, 'dialog', opt: ['id'=>$id], bool: ['open'=>$open],);
+	public static function dialog(Component $parent, bool $open = false, ?string $id = null, ?string $closedBy = null){
+		return self::element($parent, 'dialog', opt: ['id'=>$id,'closedBy'=>$closedBy], bool: ['open'=>$open],);
 	}
 
 	public static function dialog_close_button(Component $parent, ?string $label = null){
@@ -394,19 +395,20 @@ class MintMarkup extends Plugin {
 
 	public static function button(Component $parent, ?string $text = null, array|string|null $icon = null, ?string $onclick = null, string $type = 'button', bool $disabled = false){
 		$button = self::element($parent, 'button', ['type'=>$type], ['onclick'=>$onclick], ['disabled'=>$disabled]);
+		$elements = [];
 		if(isset($icon)){
 			if(is_array($icon)){
-				self::icon($button, ...$icon);
+				$elements['icon'] = self::icon($button, ...$icon);
 			} else {
-				self::icon($button, $icon);
+				$elements['icon'] = self::icon($button, $icon);
 			}
 			if(isset($text)){
-				$button->el('span')->te($text);
+				$elements['text'] = $button->el('span')->te($text);
 			}
 		} elseif(isset($text)) {
 			$button->te($text);
 		}
-		return $button;
+		return new ElementGroup($button, ...$elements);
 	}
 
 	public static function pagination(
@@ -421,11 +423,15 @@ class MintMarkup extends Plugin {
 		return new Pagination($parent, $pages, $page, $onclick);
 	}
 
+	public static function tabs(Component $parent){
+		return new Tabs($parent);
+	}
+
 	/*
 	 * Generic element
 	 */
 	public static function element($parent, string $elementname, array $at = [], array $opt = [], array $bool = [], ?string $text = null){
-		$element = $parent->el($elementname, $at + array_filter($opt) + array_keys($bool, true));
+		$element = $parent->el($elementname, $at + array_filter($opt, fn($value)=>isset($value)) + array_keys($bool, true));
 		if(isset($text)){
 			$element->te($text);
 		}

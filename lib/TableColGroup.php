@@ -31,7 +31,7 @@ class TableColGroup extends Wrapper {
 			throw new \Exception('Invalid HTML: <colgroup> with a span attribute must not have <col> children.');
 		}
 		$this->has_cols = true;
-		return MintMarkup::element($this->primary_element, 'col', at: $attributes, opt: ['span': $span]);
+		return MintMarkup::element($this->primary_element, 'col', at: $attributes, opt: ['span'=>$span]);
 	}
 
 	// overwrites at method from Wrapper

@@ -17,6 +17,7 @@ require_once "../lib/Select.php";
 require_once "../lib/Table.php";
 require_once "../lib/TableRow.php";
 require_once "../lib/Pagination.php";
+require_once "../lib/Tabs.php";
 require_once "functions.php";
 
 \TRP\HealDocument\HealDocument::register_plugin('\TRP\MintMarkup\MintMarkup');
@@ -30,6 +31,7 @@ $valid_pages = [
 	'pagination'=>'Pagination',
 	'table'=>'Table',
 	'icon'=>'Icon',
+	'tabs'=>'Tabs',
 ];
 
 try {
