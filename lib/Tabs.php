@@ -18,7 +18,7 @@ class Tabs extends Wrapper {
 	}
 
 	public function tab(?string $text = null, array|string|null $icon = null, ?string $key = null, bool $panel = true, bool $selected = false){
-		$at = ['role'=>'tab'];
+		$at = ['role'=>'tab','type'=>'button'];
 		if($panel){
 			if(!isset($key)){
 				$key = count($this->tabs);
